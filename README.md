@@ -271,10 +271,21 @@ Examples:
   (is "" (substring 2 1 "abcd") "start is bigger than end")
 ```
 
+#### slice `(start end s &optional sharedp)`
+
+Same as substring, except the result might share storage with s.
+More precisely, if sharedp is true or if *SHAREDP* is true, the slice might be s itself
+or an array displaced to s.
+
+Examples:
+
+```lisp
+  (is "abcd" (slice 1 -1 ">abcd<"))
+```
+
 #### s-first `(s)`
 
 Return the first letter of `s`.
-
 
 Examples:
 

@@ -9,6 +9,16 @@
 (setf prove:*enable-colors* t)
 (plan nil)
 
+(subtest "Index"
+  (is (loop
+         for i from -7 upto 7
+         collect (index "abcde" i))
+      '(0 0 0 1 2 3 4 0 1 2 3 4 5 5 5)
+      "index wraps and saturates"))
+
+(subtest "Slice"
+  (is (slice -2 nil "abcdef" t) "ef"))
+
 (subtest "Trim"
   (is "rst " (trim-left "   rst "))
   (is " rst" (trim-right " rst   "))
@@ -54,8 +64,11 @@
 (subtest "Insert"
   (is "hello" (insert "o" 4 "hell"))
   (is "hello" (insert "h" 0 "ello"))
-  (is "hell" (insert "l" 200 "hell") "large index")
-  (is "hell" (insert "l" -2 "hell") "negative index")
+  (is "helll" (insert "l" 200 "hell") "large index")
+  (is "hell_" (insert "_" -1 "hell") "negative index last")
+  (is "_hell" (insert "_" -5 "hell") "negative index first")
+  (is "hell_" (insert "_" 4 "hell") "positive index last")
+  (is "_hell" (insert "_" 0 "hell") "positive index first")
   (is "hell" (insert nil 2 "hell") "insert nil: do nothing")
   (is "hell" (insert "l" nil "hell") "index nil: do nothing")
   (is nil (insert "l" 2 nil) "s nil: nil")
